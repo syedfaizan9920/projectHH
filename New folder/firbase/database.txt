@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Example</title>
+    <!-- Firebase JavaScript SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Initialize Realtime Database and Firestore
+        const realtimeDatabase = firebase.database();
+        const firestore = firebase.firestore();
+
+        // Function to write data to Realtime Database
+        function writeToRealtimeDatabase() {
+            const data = {
+                name: "John",
+                email: "john@example.com",
+                message: "Hello, Realtime Database!"
+            };
+
+            // Push data to Realtime Database under a 'messages' node
+            realtimeDatabase.ref('messages').push(data);
+            console.log("Data written to Realtime Database successfully!");
+        }
+
+        // Function to write data to Firestore
+        async function writeToFirestore() {
+            const data = {
+                name: "Alice",
+                email: "alice@example.com",
+                message: "Hello, Firestore!"
+            };
+
+            // Add data to Firestore collection named 'messages'
+            await firestore.collection('messages').add(data);
+            console.log("Data written to Firestore successfully!");
+        }
+
+        // Function to read data from Realtime Database
+        function readFromRealtimeDatabase() {
+            // Reference the 'messages' node in Realtime Database
+            realtimeDatabase.ref('messages').once('value', (snapshot) => {
+                const data = snapshot.val();
+                console.log("Data from Realtime Database:", data);
+                // Do something with the retrieved data
+            });
+        }
+
+        // Function to read data from Firestore
+        async function readFromFirestore() {
+            // Reference the 'messages' collection in Firestore
+            const messagesRef = await firestore.collection('messages').get();
+            messagesRef.forEach(doc => {
+                console.log("Data from Firestore:", doc.data());
+                // Do something with the retrieved data
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Firebase Example</h1>
+    <button onclick="writeToRealtimeDatabase()">Write Data to Realtime Database</button>
+    <button onclick="writeToFirestore()">Write Data to Firestore</button>
+    <button onclick="readFromRealtimeDatabase()">Read Data from Realtime Database</button>
+    <button onclick="readFromFirestore()">Read Data from Firestore</button>
+</body>
+</html>

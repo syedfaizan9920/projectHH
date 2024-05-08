@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthHub - Medicine Interaction & Reminder App</title>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        main {
+            padding: 20px;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .medicine-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+            margin-bottom: 10px;
+        }
+        .medicine-info img {
+            width: 100px;
+            height: auto;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>HealthHub</h1>
+        <p>Medicine Interaction & Reminder App</p>
+    </header>
+    
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Medication Interaction</a>
+        <a href="#">Checkup Reminders</a>
+        <a href="#">Pill Taking Reminders</a>
+        <a href="#">All Medicine Details</a>
+    </nav>
+    
+    <main>
+        <h2>Medicine Interaction Checker</h2>
+
+       
+
+    <label for="medicineInput">Enter Medicine:</label>
+    <input type="text" id="medicineInput">
+    <button id="checkButton">Check Interactions</button>
+    <h2 id="interactionHeader"></h2> <!-- Empty initially -->
+    <ul id="interactionList"></ul> <>
+
+    <script>
+        document.getElementById('checkButton').addEventListener('click', function() {
+            var medicine = document.getElementById('medicineInput').value;
+            fetch('/check_interactions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ medicine: medicine })
+            })
+            .then(response => response.json())
+            .then(data => {
+                var interactionHeader = document.getElementById('interactionHeader');
+                var interactionList = document.getElementById('interactionList');
+                if (data.length > 0) {
+                    interactionHeader.textContent = 'Interacts with:';
+                    interactionList.innerHTML = ''; // Clear previous interactions
+                    data.forEach(function(interactingMedicine) {
+                        var listItem = document.createElement('li');
+                        listItem.textContent = interactingMedicine;
+                        interactionList.appendChild(listItem);
+                    });
+                } else {
+                    interactionHeader.textContent = 'No interactions found.';
+                    interactionList.innerHTML = ''; // Clear previous interactions
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
+
+                  
+        <h2>Checkup Reminders</h2>
+        <!-- Add checkup reminder functionality here -->
+
+        <h2>Pill Taking Reminders</h2>
+        <!-- Add pill taking reminder functionality here -->
+
+        <h2>All Medicine Details</h2>
+        <!-- Display medicine details from your database -->
+        <div class="medicine-info">
+            <img src="c:\Users\faizan\Desktop\pexels-pixabay-139398.jpg" alt="Medicine 1">
+            <div>
+                <h3>Medicine 1 Name</h3>
+                <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <p>Dosage: 1 tablet per day</p>
+                <!-- Add more details as needed -->
+            </div>
+        </div>
+        <!-- Add more medicine info sections as needed -->
+    </main>
+    
+    <footer>
+        &copy; 2024 HealthHub. All rights reserved.
+    </footer>
+</body>
+</html>
